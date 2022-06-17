@@ -15,13 +15,14 @@ Titulo *criarTitulo()
     Titulo *novo = (Titulo *)malloc(sizeof(Titulo));
 
     printf("Informe a quantidade de titulos: ");
-    scanf("%d", novo->qtd);
+    scanf("%d", &novo->qtd);
+    getchar();
 
     printf("Informe o tipo de operacao (c - compra / v - venda): ");
-    scanf("%c", novo->op);
+    scanf("%c", &novo->op);
 
     printf("Informe o preco da operacao: R$");
-    scanf("%f", novo->valor);
+    scanf("%f", &novo->valor);
 
     novo->prox = NULL;
 
