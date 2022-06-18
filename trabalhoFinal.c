@@ -36,8 +36,11 @@ Titulo *criarTitulo()
 
 void inserirNaLista(Titulo **inicioLista)
 {
-    Titulo *current = *inicioLista;
-    Titulo *novo = criarTitulo();
+    Titulo *current ;
+    Titulo *novo;
+
+    current = *inicioLista;
+    novo = criarTitulo();
 
     if (current == NULL)
         *inicioLista = novo;
@@ -51,23 +54,25 @@ void inserirNaLista(Titulo **inicioLista)
 
 void listarTitulos(Titulo *inicioLista)
 {
-    Titulo *current = inicioLista;
+    Titulo *current;
 
-    while (current->prox != NULL)
+    current = inicioLista;
+
+    do
     {
-        printf("%s", current->sigla);
-        printf("%c", current->op);
-        printf("%d", current->qtd);
-        printf("%.2f\n", current->valor);
+        printf("%s ", current->sigla);
+        printf("%c ", current->op);
+        printf("%d ", current->qtd);
+        printf("R$ %.2f\n", current->valor);
 
         current = current->prox;
-    }
+    } while (current != NULL);
 }
 
 void main()
 {
-    Titulo *inicioCompra;
-    Titulo *inicioVenda;
+    Titulo *inicioCompra = NULL;
+    Titulo *inicioVenda = NULL;
     int opcao = -1;
 
     while (opcao != 0)
