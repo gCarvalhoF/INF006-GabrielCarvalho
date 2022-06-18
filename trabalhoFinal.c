@@ -3,6 +3,7 @@
 
 typedef struct Titulo
 {
+    char sigla[5];
     int qtd;
     char op;
     float valor;
@@ -13,6 +14,10 @@ typedef struct Titulo
 Titulo *criarTitulo()
 {
     Titulo *novo = (Titulo *)malloc(sizeof(Titulo));
+
+    printf("Informe a sigla do titulo: ");
+    scanf("%s", novo->sigla);
+    getchar();
 
     printf("Informe a quantidade de titulos: ");
     scanf("%d", &novo->qtd);
@@ -29,17 +34,57 @@ Titulo *criarTitulo()
     return novo;
 }
 
-int inserirNaLista()
+void inserirNaLista(Titulo **inicioLista)
 {
-    // Titulo *current = *inicioLista;
+    Titulo *current = *inicioLista;
     Titulo *novo = criarTitulo();
 
-    printf("%d -", novo->qtd);
-    // if (current == NULL)
-    //     *inicioLista = novo;
+    if (current == NULL)
+        *inicioLista = novo;
+    else
+    {
+        while (current->prox != NULL)
+            current = current->prox;
+        current->prox = novo;
+    }
+}
+
+void listarTitulos(Titulo *inicioLista)
+{
+    Titulo *current = inicioLista;
+
+    while (current->prox != NULL)
+    {
+        printf("%s", current->sigla);
+        printf("%c", current->op);
+        printf("%d", current->qtd);
+        printf("%.2f\n", current->valor);
+
+        current = current->prox;
+    }
 }
 
 void main()
 {
-    inserirNaLista();
+    Titulo *inicioCompra;
+    Titulo *inicioVenda;
+    int opcao = -1;
+
+    while (opcao != 0)
+    {
+        printf("Menu \n");
+        scanf("%d", &opcao);
+        switch (opcao)
+        {
+        case 1:
+            inserirNaLista(&inicioCompra);
+            break;
+        case 2:
+            listarTitulos(inicioCompra);
+            break;
+
+        default:
+            break;
+        }
+    }
 }
