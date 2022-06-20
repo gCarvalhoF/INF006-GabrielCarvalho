@@ -451,6 +451,7 @@ void main()
     while (opcao != 0)
     {
         printf("Menu \n");
+      printf("1- Inserir novo Titulo \n2- Listar titulos registrados \n3- Operar Títulos \n4- Listar operacoes\n ->");
         scanf("%d", &opcao);
         switch (opcao)
         {
@@ -464,7 +465,7 @@ void main()
 
         case 3:
             listarTitulos(inicioTitulos);
-            printf("Qual titulo deseja operar? ->");
+            printf("Qual titulo deseja operar? \n->");
             scanf("%d", &id);
             getchar();
 
@@ -477,7 +478,7 @@ void main()
             scanf("%d", &id);
             titulo = getTituloById(id, &inicioTitulos);
 
-            printf("1- Listar Operacoes de Compra \n2- Listar Operacoes de Venda \n3- Listar todas as operacoes");
+            printf("1- Listar Operacoes de Compra \n2- Listar Operacoes de Venda \n3- Listar todas as operacoes\n ->");
             scanf("%d", &opcaoSecundaria);
             if (opcaoSecundaria == 1)
                 listarOperacoes(titulo->compra, id);
