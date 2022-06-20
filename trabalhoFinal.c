@@ -88,8 +88,7 @@ void listarTitulos(Titulo *inicioLista)
 void carregarTitulos(Titulo **inicioLista)
 {
     Titulo *novo = (Titulo *)malloc(sizeof(Titulo));
-    Titulo *current;
-    current = *inicioLista;
+    Titulo *current = *inicioLista;
     FILE *file = fopen("./titulos.txt", "a+");
 
     if (file == NULL)
@@ -98,19 +97,24 @@ void carregarTitulos(Titulo **inicioLista)
     }
     else
     {
-        while (fscanf(file, "%d %s", &novo->id, &novo->sigla) != EOF)
+        while (fscanf(file, "%d %s", &novo->id, novo->sigla) != EOF)
         {
+            current = *inicioLista;
+          
             novo->prox = NULL;
             novo->compra = NULL;
             novo->venda = NULL;
 
             if (*inicioLista == NULL)
+            {
                 *inicioLista = novo;
+            }
             else
             {
                 while (current->prox != NULL)
-                    current = current->prox;
+                  current = current->prox;
                 current->prox = novo;
+              printf("%d", novo->prox);
             }
         }
     }
