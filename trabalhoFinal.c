@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct Acao
 {
@@ -21,7 +22,7 @@ typedef struct Titulo
 } Titulo;
 
 // Funções referentes aos titulos
-Titulo *criarTitulo(int arquivo)
+Titulo *criarTitulo()
 {
     Titulo *novo = (Titulo *)malloc(sizeof(Titulo));
 
@@ -85,9 +86,21 @@ void listarTitulos(Titulo *inicioLista)
     } while (current != NULL);
 }
 
+Titulo* criarTitArq(int id, char sigla[]){
+  Titulo *novo = (Titulo *)malloc(sizeof(Titulo));
+
+  novo->id = id;
+  strcpy(novo->sigla, sigla);
+  novo->prox = NULL;
+  novo->compra = NULL;
+  novo->venda = NULL;
+}
+
 void carregarTitulos(Titulo **inicioLista)
 {
-    Titulo *novo = (Titulo *)malloc(sizeof(Titulo));
+    int id;
+    char sigla[5];
+  
     Titulo *current = *inicioLista;
     FILE *file = fopen("./titulos.txt", "a+");
 
@@ -97,24 +110,22 @@ void carregarTitulos(Titulo **inicioLista)
     }
     else
     {
-        while (fscanf(file, "%d %s", &novo->id, novo->sigla) != EOF)
-        {
-            current = *inicioLista;
+        while (fscanf(file, "%d %s", &id, sigla) != EOF)
+        {            
+          current = *inicioLista;
           
-            novo->prox = NULL;
-            novo->compra = NULL;
-            novo->venda = NULL;
-
+            
+          
             if (*inicioLista == NULL)
             {
-                *inicioLista = novo;
+                *inicioLista = criarTitArq(id, sigla);
             }
             else
             {
                 while (current->prox != NULL)
-                  current = current->prox;
-                current->prox = novo;
-              printf("%d", novo->prox);
+              {
+                  current = current->prox;}
+                current->prox = criarTitArq(id, sigla);
             }
         }
     }
