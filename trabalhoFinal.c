@@ -356,6 +356,78 @@ void listarOperacoes(Acao *inicioLista, int id)
     }
 }
 
+Acao* criarAcaoArq(int qtd, float valor, char tipo){
+  Acao *novo = (Acao *)malloc(sizeof(Acao));
+
+  novo->valor = valor;
+  novo->tipo = tipo;
+  novo->qtd = qtd;
+  novo->prox = NULL;
+}
+
+void carregarAcao(Titulo **inicioLista)
+{  
+    int id, qtd;
+    float valor;
+    char tipo;
+
+    
+  
+    FILE *file = fopen("./acoes.txt", "a+");
+
+    if (file == NULL)
+    {
+        printf("Não foi possível abrir o arquivo.\n");
+    }
+    else
+    {
+        while (fscanf(file, "%d %f %d %c", &id, &valor, &qtd, &tipo) != EOF)
+        {      
+          Acao *current;
+          Titulo *title = *inicioLista;
+
+          while (title != NULL)
+          {
+              if (title->id == id)
+                  break;
+      
+              title = title->prox;
+          }
+      
+          if (tipo == 'c')
+            {current = title->compra;
+          
+            {if (title->compra == NULL)
+            {
+                title->compra = criarAcaoArq(qtd, valor, tipo);
+            }
+            else
+            {
+                while (current->prox != NULL)
+              {
+                  current = current->prox;}
+                current->prox = criarAcaoArq(qtd, valor, tipo);
+              }}}
+
+          else (tipo == 'v')
+            {current = title->venda;
+          
+            {if (title->venda == NULL)
+            {
+                title->venda = criarAcaoArq(qtd, valor, tipo);
+            }
+            else
+            {
+                while (current->prox != NULL)
+              {
+                  current = current->prox;}
+                current->prox = criarAcaoArq(qtd, valor, tipo);
+              }}}
+        }
+    }
+    fclose(file);
+}
+
 void main()
 {
     Titulo *inicioTitulos = NULL;
@@ -364,6 +436,7 @@ void main()
     int opcao = -1, opcaoSecundaria = -1;
 
     carregarTitulos(&inicioTitulos);
+    carregarAcao(&inicioTitulos);
 
     while (opcao != 0)
     {
