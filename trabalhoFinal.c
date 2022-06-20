@@ -86,21 +86,22 @@ void listarTitulos(Titulo *inicioLista)
     } while (current != NULL);
 }
 
-Titulo* criarTitArq(int id, char sigla[]){
-  Titulo *novo = (Titulo *)malloc(sizeof(Titulo));
+Titulo *criarTitArq(int id, char sigla[])
+{
+    Titulo *novo = (Titulo *)malloc(sizeof(Titulo));
 
-  novo->id = id;
-  strcpy(novo->sigla, sigla);
-  novo->prox = NULL;
-  novo->compra = NULL;
-  novo->venda = NULL;
+    novo->id = id;
+    strcpy(novo->sigla, sigla);
+    novo->prox = NULL;
+    novo->compra = NULL;
+    novo->venda = NULL;
 }
 
 void carregarTitulos(Titulo **inicioLista)
 {
     int id;
     char sigla[5];
-  
+
     Titulo *current = *inicioLista;
     FILE *file = fopen("./titulos.txt", "a+");
 
@@ -111,11 +112,9 @@ void carregarTitulos(Titulo **inicioLista)
     else
     {
         while (fscanf(file, "%d %s", &id, sigla) != EOF)
-        {            
-          current = *inicioLista;
-          
-            
-          
+        {
+            current = *inicioLista;
+
             if (*inicioLista == NULL)
             {
                 *inicioLista = criarTitArq(id, sigla);
@@ -123,8 +122,9 @@ void carregarTitulos(Titulo **inicioLista)
             else
             {
                 while (current->prox != NULL)
-              {
-                  current = current->prox;}
+                {
+                    current = current->prox;
+                }
                 current->prox = criarTitArq(id, sigla);
             }
         }
@@ -356,23 +356,22 @@ void listarOperacoes(Acao *inicioLista, int id)
     }
 }
 
-Acao* criarAcaoArq(int qtd, float valor, char tipo){
-  Acao *novo = (Acao *)malloc(sizeof(Acao));
+Acao *criarAcaoArq(int qtd, float valor, char tipo)
+{
+    Acao *novo = (Acao *)malloc(sizeof(Acao));
 
-  novo->valor = valor;
-  novo->tipo = tipo;
-  novo->qtd = qtd;
-  novo->prox = NULL;
+    novo->valor = valor;
+    novo->tipo = tipo;
+    novo->qtd = qtd;
+    novo->prox = NULL;
 }
 
 void carregarAcao(Titulo **inicioLista)
-{  
+{
     int id, qtd;
     float valor;
     char tipo;
 
-    
-  
     FILE *file = fopen("./acoes.txt", "a+");
 
     if (file == NULL)
@@ -382,47 +381,58 @@ void carregarAcao(Titulo **inicioLista)
     else
     {
         while (fscanf(file, "%d %f %d %c", &id, &valor, &qtd, &tipo) != EOF)
-        {      
-          Acao *current;
-          Titulo *title = *inicioLista;
+        {
+            Acao *current;
+            Titulo *title = *inicioLista;
 
-          while (title != NULL)
-          {
-              if (title->id == id)
-                  break;
-      
-              title = title->prox;
-          }
-      
-          if (tipo == 'c')
-            {current = title->compra;
-          
-            {if (title->compra == NULL)
+            while (title != NULL)
             {
-                title->compra = criarAcaoArq(qtd, valor, tipo);
-            }
-            else
-            {
-                while (current->prox != NULL)
-              {
-                  current = current->prox;}
-                current->prox = criarAcaoArq(qtd, valor, tipo);
-              }}}
+                if (title->id == id)
+                    break;
 
-          else (tipo == 'v')
-            {current = title->venda;
-          
-            {if (title->venda == NULL)
-            {
-                title->venda = criarAcaoArq(qtd, valor, tipo);
+                title = title->prox;
             }
-            else
+
+            if (tipo == 'c')
             {
-                while (current->prox != NULL)
-              {
-                  current = current->prox;}
-                current->prox = criarAcaoArq(qtd, valor, tipo);
-              }}}
+                current = title->compra;
+
+                {
+                    if (title->compra == NULL)
+                    {
+                        title->compra = criarAcaoArq(qtd, valor, tipo);
+                    }
+                    else
+                    {
+                        while (current->prox != NULL)
+                        {
+                            current = current->prox;
+                        }
+                        current->prox = criarAcaoArq(qtd, valor, tipo);
+                    }
+                }
+            }
+
+            else
+                (tipo == 'v')
+                {
+                    current = title->venda;
+
+                    {
+                        if (title->venda == NULL)
+                        {
+                            title->venda = criarAcaoArq(qtd, valor, tipo);
+                        }
+                        else
+                        {
+                            while (current->prox != NULL)
+                            {
+                                current = current->prox;
+                            }
+                            current->prox = criarAcaoArq(qtd, valor, tipo);
+                        }
+                    }
+                }
         }
     }
     fclose(file);
