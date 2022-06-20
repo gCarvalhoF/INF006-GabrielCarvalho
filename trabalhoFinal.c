@@ -456,23 +456,30 @@ void main()
         switch (opcao)
         {
         case 1:
+          system("clear");
             inserirTitulo(&inicioTitulos);
+
             break;
 
         case 2:
+          system("clear");
             listarTitulos(inicioTitulos);
+          
             break;
 
         case 3:
+          system("clear");
             listarTitulos(inicioTitulos);
             printf("Qual titulo deseja operar? \n->");
             scanf("%d", &id);
             getchar();
 
             inserirOperacao(id, &inicioTitulos);
+
             break;
 
         case 4:
+          system("clear");
             listarTitulos(inicioTitulos);
             printf("Qual titulo deseja verificar? \n->");
             scanf("%d", &id);
@@ -489,16 +496,19 @@ void main()
                 listarOperacoes(titulo->compra, id);
                 listarOperacoes(titulo->venda, id);
             }
-
+            
+            
             break;
 
         case 5:
+          system("clear");
             listarTitulos(inicioTitulos);
             printf("Qual titulo deseja verificar? \n->");
             scanf("%d", &id);
             titulo = getTituloById(id, &inicioTitulos);
 
             printf("Ultima cotacao %s: %.2f - %d - %c\n", titulo->sigla, titulo->cotacao.valor, titulo->cotacao.qtd, titulo->cotacao.tipo);
+          
             break;
         default:
             break;
