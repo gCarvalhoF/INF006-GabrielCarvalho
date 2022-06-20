@@ -397,7 +397,7 @@ void carregarAcao(Titulo **inicioLista)
             {
                 current = title->compra;
 
-                {
+                
                     if (title->compra == NULL)
                     {
                         title->compra = criarAcaoArq(qtd, valor, tipo);
@@ -410,11 +410,11 @@ void carregarAcao(Titulo **inicioLista)
                         }
                         current->prox = criarAcaoArq(qtd, valor, tipo);
                     }
-                }
+                
             }
 
             else
-                (tipo == 'v')
+                if (tipo == 'v')
                 {
                     current = title->venda;
 
