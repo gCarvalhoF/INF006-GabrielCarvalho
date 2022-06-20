@@ -1,22 +1,33 @@
 2. Objetivos Especificos:
 
 a) Incluir as ofertas online com tipo (compra ou venda), sigla do papel, quantidade e
-valor usando estrutura de dados dinamicas
+valor usando estrutura de dados dinâmicas
+
+    ### Inserção de Títulos está funcionando.
+    ### Inserção de operações está funcionando.
+    ### Falta a inserção ordenada
 
 b) Mostrar as ofertas disponiveis de um titulo varrendo as estrutura de dados
 dinamicas (para primeira entrega) e pelo menos trés titulos varrendo as estrutura
 de dados dinamicas (para segunda entrega)
 
-c) realizacdo de operacdes pela média (se o valor da compra for maior que o valor de
+    ### Listagem de Títulos está funcionando.
+    ### Listagem de operações está funcionando.
+
+c) realização de operações pela média (se o valor da compra for maior que o valor de
 venda)
 
-d) Carregar as ofertas de compra e venda de acdes de um ou mais titulos via arquivo;
+d) Carregar as ofertas de compra e venda de ações de um ou mais titulos via arquivo;
 
-e) Realizar as operacées se o valor de compra e venda for igual
+e)  Realizar as operacões se:
+        -> o valor de compra e venda for igual 
+            ### Feito
 
-f) A quantidade vendida ou comprada é a menor das duas quantidades
+        -> A quantidade vendida ou comprada é a menor das duas quantidades
 
-g) Ao realizar a operacdo, a ordem de compra e venda devem ter as quantidades
-realizadas abatidas da oferta
 
-h) Apresentar o ultimo preco da operacdo realizada (cotac4o ) por papel.
+        -> Ao realizar a operação, a ordem de compra e venda devem ter as quantidades realizadas abatidas da oferta 
+            ### Feito
+
+f) Apresentar o último preço da operação realizada (cotação) por papel.
+    ### Feito

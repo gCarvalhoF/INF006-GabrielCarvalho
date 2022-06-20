@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 typedef struct Acao
 {
     char tipo;
@@ -14,13 +15,13 @@ typedef struct Titulo
     char sigla[5];
     Acao *compra;
     Acao *venda;
-    float cotacao;
+    Acao cotacao;
     struct Titulo *prox;
 
 } Titulo;
 
 // Funções referentes aos titulos
-Titulo *criarTitulo()
+Titulo *criarTitulo(int arquivo)
 {
     Titulo *novo = (Titulo *)malloc(sizeof(Titulo));
 
@@ -29,7 +30,6 @@ Titulo *criarTitulo()
     getchar();
 
     novo->id = 0;
-    novo->cotacao = 0;
     novo->compra = NULL;
     novo->venda = NULL;
     novo->prox = NULL;
@@ -43,7 +43,7 @@ void inserirTitulo(Titulo **inicioLista)
     Titulo *novo;
 
     current = *inicioLista;
-    novo = criarTitulo();
+    novo = criarTitulo(0);
 
     if (current == NULL)
         *inicioLista = novo;
@@ -56,7 +56,7 @@ void inserirTitulo(Titulo **inicioLista)
     }
 }
 
-Titulo **getTituloById(int id, Titulo **inicioLista)
+Titulo *getTituloById(int id, Titulo **inicioLista)
 {
     Titulo *current = *inicioLista;
 
@@ -85,6 +85,38 @@ void listarTitulos(Titulo *inicioLista)
     } while (current != NULL);
 }
 
+void carregarTitulos(Titulo **inicioLista)
+{
+    Titulo *novo = (Titulo *)malloc(sizeof(Titulo));
+    Titulo *current;
+    current = *inicioLista;
+    FILE *file = fopen("./titulos.txt", "a+");
+
+    if (file == NULL)
+    {
+        printf("Não foi possível abrir o arquivo.\n");
+    }
+    else
+    {
+        while (fscanf(file, "%d %s", &novo->id, &novo->sigla) != EOF)
+        {
+            novo->prox = NULL;
+            novo->compra = NULL;
+            novo->venda = NULL;
+
+            if (*inicioLista == NULL)
+                *inicioLista = novo;
+            else
+            {
+                while (current->prox != NULL)
+                    current = current->prox;
+                current->prox = novo;
+            }
+        }
+    }
+    fclose(file);
+}
+
 // Funções referentes às operações (Compra e Venda)
 
 Acao *criarOperacao()
@@ -105,54 +137,208 @@ Acao *criarOperacao()
     return novaOperacao;
 }
 
+void realizarOperacoes(int id, Titulo **inicioTitulos)
+{
+    int novaQtdVenda = 0, novaQtdCompra = 0;
+    Titulo *title;
+    title = *inicioTitulos;
+
+    while (title != NULL)
+    {
+        if (title->id == id)
+            break;
+
+        title = title->prox;
+    }
+
+    Acao *tempCompra = title->compra, *prevCompra;
+    Acao *tempVenda = title->venda, *prevVenda;
+
+    // If head node itself holds the key to be deleted
+    if (tempCompra != NULL && tempVenda != NULL && (tempCompra->valor == tempVenda->valor))
+
+    {
+        if (tempCompra->qtd == tempVenda->qtd)
+        {
+            title->compra = tempCompra->prox; // Changed head
+            title->venda = tempVenda->prox;
+
+            title->cotacao = *tempVenda;
+            // Changed head
+
+            free(tempCompra); // free old head
+            free(tempVenda);  // free old head
+
+            return;
+        }
+        else
+        {
+            novaQtdCompra = tempCompra->qtd - tempVenda->qtd;
+            novaQtdVenda = tempVenda->qtd - tempCompra->qtd;
+
+            tempVenda->qtd = novaQtdVenda;
+            tempCompra->qtd = novaQtdCompra;
+
+            title->cotacao = *tempVenda;
+
+            if (novaQtdCompra <= 0)
+            {
+                if (tempCompra->prox == NULL)
+                    title->compra = NULL;
+                else
+                {
+                    title->compra = tempCompra->prox;
+                    free(tempCompra);
+                }
+                return;
+            }
+
+            if (novaQtdVenda <= 0)
+            {
+                if (tempVenda->prox == NULL)
+                    title->venda = NULL;
+                else
+                {
+                    title->venda = tempVenda->prox;
+                    free(tempVenda);
+                }
+                return;
+            }
+        }
+
+        // Search for the key to be deleted, keep track of the
+        // previous node as we need to change 'prev->next'
+        while ((tempCompra != NULL || tempVenda != NULL) && tempCompra->valor < tempVenda->valor)
+        {
+            prevCompra = tempCompra;
+            prevVenda = tempVenda;
+
+            tempCompra = tempCompra->prox;
+            tempVenda = tempVenda->prox;
+        }
+
+        if (tempCompra->valor == tempVenda->valor && !(tempCompra->qtd == tempVenda->qtd))
+        {
+
+            novaQtdCompra = tempCompra->qtd - tempVenda->qtd;
+            novaQtdVenda = tempVenda->qtd - tempCompra->qtd;
+
+            tempVenda->qtd = novaQtdVenda;
+            tempCompra->qtd = novaQtdCompra;
+
+            title->cotacao = *tempVenda;
+
+            if (tempCompra->qtd <= 0)
+            {
+                prevCompra->prox = tempCompra->prox;
+                free(tempCompra);
+            }
+
+            else if (tempVenda->qtd <= 0)
+            {
+                prevVenda->prox = tempVenda->prox;
+                free(tempVenda);
+            }
+            return;
+        }
+
+        // If key was not present in linked list
+        if (tempCompra == NULL || tempVenda == NULL)
+            return;
+
+        // Unlink the node from linked list
+        prevCompra->prox = tempCompra->prox;
+        prevVenda->prox = tempVenda->prox;
+
+        free(tempCompra); // Free memory
+        free(tempVenda);  // Free memory
+    }
+}
+
 void inserirOperacao(int id, Titulo **inicioTitulos)
 {
-    Titulo *title;
-    title = getTituloById(id, inicioTitulos);
+    Titulo *title = *inicioTitulos;
+    while (title != NULL)
+    {
+        if (title->id == id)
+            break;
+
+        title = title->prox;
+    }
 
     Acao *novaOperacao;
     novaOperacao = criarOperacao();
     Acao *current = NULL;
+    Acao *previous = NULL;
+    Acao *temp;
 
     if (novaOperacao->tipo == 'c')
     {
-        if (title->compra == NULL)
+
+        if (title->compra == NULL || title->compra->valor <= novaOperacao->valor)
         {
+            novaOperacao->prox = title->compra;
             title->compra = novaOperacao;
         }
         else
+        {
+            /* Locate the node before
+    the point of insertion */
             current = title->compra;
+            while (current->prox != NULL && current->prox->valor > novaOperacao->valor)
+            {
+                current = current->prox;
+            }
+            novaOperacao->prox = current->prox;
+            current->prox = novaOperacao;
+        }
     }
+
     else
     {
-        if (title->compra == NULL)
+        if (title->venda == NULL || title->venda->valor >= novaOperacao->valor)
         {
-            title->compra = novaOperacao;
+            novaOperacao->prox = title->venda;
+            title->venda = novaOperacao;
         }
         else
-            current = title->compra;
+        {
+            /* Locate the node before
+    the point of insertion */
+            current = title->venda;
+            while (current->prox != NULL && current->prox->valor < novaOperacao->valor)
+            {
+                current = current->prox;
+            }
+            novaOperacao->prox = current->prox;
+            current->prox = novaOperacao;
+        }
     }
 
-    if (current != NULL)
-    {
-        while (current->prox != NULL)
-            current = current->prox;
-        current->prox = novaOperacao;
-    }
+    realizarOperacoes(id, inicioTitulos);
 }
 
-void listarOperacoes(Acao *inicioLista)
+void listarOperacoes(Acao *inicioLista, int id)
 {
     Acao *current;
 
     current = inicioLista;
-
-    do
+    if (inicioLista == NULL)
+        printf("Nenhuma Operacao registrada ainda!\n");
+    else
     {
-        printf("%d - %c \n", current->valor, current->tipo);
+        if (current->tipo == 'c')
+            printf("Compra\n");
+        else
+            printf("Venda\n");
 
-        current = current->prox;
-    } while (current != NULL);
+        do
+        {
+            printf("%.2f - %d - %c\n", current->valor, current->qtd, current->tipo);
+
+            current = current->prox;
+        } while (current != NULL);
+    }
 }
 
 void main()
@@ -161,6 +347,8 @@ void main()
     Titulo *titulo;
     int id = -1;
     int opcao = -1, opcaoSecundaria = -1;
+
+    carregarTitulos(&inicioTitulos);
 
     while (opcao != 0)
     {
@@ -191,22 +379,28 @@ void main()
             scanf("%d", &id);
             titulo = getTituloById(id, &inicioTitulos);
 
-            printf("%d", titulo->compra->valor);
-
             printf("1- Listar Operacoes de Compra \n2- Listar Operacoes de Venda \n3- Listar todas as operacoes");
             scanf("%d", &opcaoSecundaria);
             if (opcaoSecundaria == 1)
-                listarOperacoes(titulo->compra);
+                listarOperacoes(titulo->compra, id);
             else if (opcaoSecundaria == 2)
-                listarOperacoes(titulo->venda);
+                listarOperacoes(titulo->venda, id);
             else if (opcaoSecundaria == 3)
             {
-                listarOperacoes(titulo->compra);
-                listarOperacoes(titulo->venda);
+                listarOperacoes(titulo->compra, id);
+                listarOperacoes(titulo->venda, id);
             }
 
             break;
 
+        case 5:
+            listarTitulos(inicioTitulos);
+            printf("Qual titulo deseja verificar? \n->");
+            scanf("%d", &id);
+            titulo = getTituloById(id, &inicioTitulos);
+
+            printf("Ultima cotacao %s: %.2f - %d - %c\n", titulo->sigla, titulo->cotacao.valor, titulo->cotacao.qtd, titulo->cotacao.tipo);
+            break;
         default:
             break;
         }
