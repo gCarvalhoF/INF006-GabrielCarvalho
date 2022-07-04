@@ -44,7 +44,7 @@ void inserirTitulo(Titulo **inicioLista)
     Titulo *novo;
 
     current = *inicioLista;
-    novo = criarTitulo(0);
+    novo = criarTitulo();
 
     if (current == NULL)
         *inicioLista = novo;
@@ -77,6 +77,8 @@ void listarTitulos(Titulo *inicioLista)
     Titulo *current;
 
     current = inicioLista;
+    printf("\t T I T U L O S  R E G I S T R A D O S\n");
+    printf("--------------------------------------------\n");
 
     do
     {
@@ -84,6 +86,8 @@ void listarTitulos(Titulo *inicioLista)
 
         current = current->prox;
     } while (current != NULL);
+    printf("--------------------------------------------\n");
+
 }
 
 Titulo *criarTitArq(int id, char sigla[])
@@ -339,20 +343,20 @@ void listarOperacoes(Acao *inicioLista, int id)
 
     current = inicioLista;
     if (inicioLista == NULL)
-        printf("Nenhuma Operacao registrada ainda!\n");
+     { printf("---------------------------------------------\n");
+        printf("\n\tNenhuma Operacao registrada ainda!\n");
+       printf("---------------------------------------------\n");}
     else
     {
-        if (current->tipo == 'c')
-            printf("Compra\n");
-        else
-            printf("Venda\n");
-
         do
         {
-            printf("%.2f - %d - %c\n", current->valor, current->qtd, current->tipo);
+            printf("---------------------------------------------\n");
+            printf("\t\tR$%.2f - %d - %c\n", current->valor, current->qtd, current->tipo);
 
             current = current->prox;
         } while (current != NULL);
+      printf("---------------------------------------------\n");
+
     }
 }
 
@@ -428,6 +432,29 @@ void carregarAcao(Titulo **inicioLista)
                         }
                         current->prox = criarAcaoArq(qtd, valor, tipo);
                     }
+<<<<<<< HEAD
+=======
+              }
+            else
+                if (tipo == 'v')
+                {
+                    current = title->venda;
+
+                    {
+                        if (title->venda == NULL)
+                        {
+                            title->venda = criarAcaoArq(qtd, valor, tipo);
+                        }
+                        else
+                        {
+                            while (current->prox != NULL)
+                            {
+                                current = current->prox;
+                            }
+                            current->prox = criarAcaoArq(qtd, valor, tipo);
+                        }
+                    }
+>>>>>>> 36b84e1d229965d5c5a7966b4307576965cfc138
                 }
             }
         }
@@ -448,7 +475,11 @@ void main()
     while (opcao != 0)
     {
         printf("Menu \n");
+<<<<<<< HEAD
         printf("1- Inserir novo Titulo \n2- Listar titulos registrados \n3- Operar Títulos \n4- Listar operacoes\n ->");
+=======
+      printf("1- Inserir novo Titulo \n2- Listar titulos registrados \n3- Operar Títulos \n4- Listar operacoes \n5- Verificar última cotacao\n ->");
+>>>>>>> 36b84e1d229965d5c5a7966b4307576965cfc138
         scanf("%d", &opcao);
         switch (opcao)
         {
@@ -461,7 +492,11 @@ void main()
         case 2:
             system("cls");
             listarTitulos(inicioTitulos);
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 36b84e1d229965d5c5a7966b4307576965cfc138
             break;
 
         case 3:
@@ -482,15 +517,32 @@ void main()
             scanf("%d", &id);
             titulo = getTituloById(id, &inicioTitulos);
 
-            printf("1- Listar Operacoes de Compra \n2- Listar Operacoes de Venda \n3- Listar todas as operacoes\n ->");
+            printf("1- Listar Operacoes de Compra \n2- Listar Operacoes de Venda \n3- Listar todas as operacoes \n ->");
             scanf("%d", &opcaoSecundaria);
+          
+            
             if (opcaoSecundaria == 1)
-                listarOperacoes(titulo->compra, id);
+            {
+              printf("---------------------------------------------\n");
+              printf("\tO P E R A C O E S");
+              printf("\tC O M P R A\n");
+              listarOperacoes(titulo->compra, id);}
             else if (opcaoSecundaria == 2)
-                listarOperacoes(titulo->venda, id);
+            {
+              printf("---------------------------------------------\n");
+            printf("\tO P E R A C O E S");
+              printf("\tV E N D A\n");
+                listarOperacoes(titulo->venda, id);}
             else if (opcaoSecundaria == 3)
             {
+                printf("---------------------------------------------\n");
+                printf("\tO P E R A C O E S");
+                printf("\tC O M P R A\n");
                 listarOperacoes(titulo->compra, id);
+              
+                printf("---------------------------------------------\n");
+                printf("\tO P E R A C O E S");
+                printf("\tV E N D A\n");
                 listarOperacoes(titulo->venda, id);
             }
 
@@ -503,8 +555,22 @@ void main()
             scanf("%d", &id);
             titulo = getTituloById(id, &inicioTitulos);
 
+<<<<<<< HEAD
             printf("Ultima cotacao %s: %.2f - %d - %c\n", titulo->sigla, titulo->cotacao.valor, titulo->cotacao.qtd, titulo->cotacao.tipo);
 
+=======
+            printf("                 C O T A C A O\n");
+            printf("---------------------------------------------\n");
+          
+            if (titulo->cotacao.valor == 0)
+              printf("\tAinda não existe cotação para esse título.\n");
+            else
+            {
+            printf("\tUltima cotacao %s: R$ %.2f - %c\n", titulo->sigla, titulo->cotacao.valor, titulo->cotacao.tipo);}
+            printf("---------------------------------------------\n");
+
+          
+>>>>>>> 36b84e1d229965d5c5a7966b4307576965cfc138
             break;
         default:
             break;
