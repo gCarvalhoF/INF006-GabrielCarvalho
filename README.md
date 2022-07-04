@@ -26,14 +26,14 @@
     
 ### **Conceitos trabalhados**:
 
-    - Struct
-    - Alocação dinâmica
-    - Ponteiros
-    - Funções
-    - Tipos de dados
-    - Retorno e tratamento de arrays em funções
-    - Tratamento de arquivos
-      - Recuperação de dados inseridos em arquivos
+  - Struct
+  - Alocação dinâmica
+  - Ponteiros
+  - Funções
+  - Tipos de dados
+  - Retorno e tratamento de arrays em funções
+  - Tratamento de arquivos
+    - Recuperação de dados inseridos em arquivos
 
 ## 🚀 Instalando <Simulador_de_Mercado_Financeiro>
 
