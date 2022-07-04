@@ -397,10 +397,28 @@ void carregarAcao(Titulo **inicioLista)
             {
                 current = title->compra;
 
-                
-                    if (title->compra == NULL)
+                if (title->compra == NULL)
+                {
+                    title->compra = criarAcaoArq(qtd, valor, tipo);
+                }
+                else
+                {
+                    while (current->prox != NULL)
                     {
-                        title->compra = criarAcaoArq(qtd, valor, tipo);
+                        current = current->prox;
+                    }
+                    current->prox = criarAcaoArq(qtd, valor, tipo);
+                }
+            }
+
+            else if (tipo == 'v')
+            {
+                current = title->venda;
+
+                {
+                    if (title->venda == NULL)
+                    {
+                        title->venda = criarAcaoArq(qtd, valor, tipo);
                     }
                     else
                     {
@@ -410,29 +428,8 @@ void carregarAcao(Titulo **inicioLista)
                         }
                         current->prox = criarAcaoArq(qtd, valor, tipo);
                     }
-                
-            }
-
-            else
-                if (tipo == 'v')
-                {
-                    current = title->venda;
-
-                    {
-                        if (title->venda == NULL)
-                        {
-                            title->venda = criarAcaoArq(qtd, valor, tipo);
-                        }
-                        else
-                        {
-                            while (current->prox != NULL)
-                            {
-                                current = current->prox;
-                            }
-                            current->prox = criarAcaoArq(qtd, valor, tipo);
-                        }
-                    }
                 }
+            }
         }
     }
     fclose(file);
@@ -451,24 +448,24 @@ void main()
     while (opcao != 0)
     {
         printf("Menu \n");
-      printf("1- Inserir novo Titulo \n2- Listar titulos registrados \n3- Operar Títulos \n4- Listar operacoes\n ->");
+        printf("1- Inserir novo Titulo \n2- Listar titulos registrados \n3- Operar Títulos \n4- Listar operacoes\n ->");
         scanf("%d", &opcao);
         switch (opcao)
         {
         case 1:
-          system("clear");
+            system("cls");
             inserirTitulo(&inicioTitulos);
 
             break;
 
         case 2:
-          system("clear");
+            system("cls");
             listarTitulos(inicioTitulos);
-          
+
             break;
 
         case 3:
-          system("clear");
+            system("cls");
             listarTitulos(inicioTitulos);
             printf("Qual titulo deseja operar? \n->");
             scanf("%d", &id);
@@ -479,7 +476,7 @@ void main()
             break;
 
         case 4:
-          system("clear");
+            system("cls");
             listarTitulos(inicioTitulos);
             printf("Qual titulo deseja verificar? \n->");
             scanf("%d", &id);
@@ -496,19 +493,18 @@ void main()
                 listarOperacoes(titulo->compra, id);
                 listarOperacoes(titulo->venda, id);
             }
-            
-            
+
             break;
 
         case 5:
-          system("clear");
+            system("cls");
             listarTitulos(inicioTitulos);
             printf("Qual titulo deseja verificar? \n->");
             scanf("%d", &id);
             titulo = getTituloById(id, &inicioTitulos);
 
             printf("Ultima cotacao %s: %.2f - %d - %c\n", titulo->sigla, titulo->cotacao.valor, titulo->cotacao.qtd, titulo->cotacao.tipo);
-          
+
             break;
         default:
             break;
