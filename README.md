@@ -35,9 +35,9 @@
   - Tratamento de arquivos
     - Recuperação de dados inseridos em arquivos
 
-## 🚀 Instalando <Simulador_de_Mercado_Financeiro>
+## 🚀 Instalando *Simulador de Mercado Financeiro*
 
-Para instalar o <Simulador_de_Mercado_Financeiro>, siga estas etapas:
+Para instalar o *Simulador de Mercado Financeiro*, siga estas etapas:
 
 Linux e macOS:
 ```
@@ -49,9 +49,9 @@ Windows:
 gcc trabalhoFinal.c -o mercadoAcoes
 ```
 
-## ☕ Usando <Simulador_de_Mercado_Financeiro>
+## ☕ Usando *Simulador de Mercado Financeiro*
 
-Para usar <Simulador_de_Mercado_Financeiro>, siga estas etapas:
+Para usar *Simulador de Mercado Financeiro*, siga estas etapas:
 
 ```
 ./mercadoAcoes
